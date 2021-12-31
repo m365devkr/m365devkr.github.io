@@ -1,0 +1,59 @@
+name: Build and Publish Static Website to GH Pages
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  build_and_publish:
+    name: Build and publish
+    if: github.repository_owner == 'm365devkr' && github.ref == 'refs/heads/main'
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+        fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+
+    - name: Setup node.js SDK
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Install Gatsby CLI
+      shell: bash
+      run: |
+        npm install -g gatsby-cli
+
+    - name: Remove /docs
+      shell: bash
+      run: |
+        rm -rf ./docs
+
+    - name: Build app
+      shell: pwsh
+      run: |
+        ./app-build.ps1
+
+    - name: Copy CNAME
+      shell: bash
+      run: |
+        mv ./CNAME ./docs
+
+    - name: Publish artifacts
+      shell: bash
+      run: |
+        git config --local user.email "site@m365dev.kr"
+        git config --local user.name "M365 Dev Blog"
+        git add ./docs/\* --force
+        git commit -m "Publish: ${{ github.event.head_commit.message }}"
+
+    - name: Push artifacts
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
