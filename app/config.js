@@ -10,7 +10,7 @@ const config = {
     logoLink: 'https://m365dev.kr',
     title:
       "<a href='https://hasura.io/learn/'><img class='img-responsive' src='https://graphql-engine-cdn.hasura.io/learn-hasura/assets/homepage/learn-logo.svg' alt='Learn logo' /></a>",
-    githubUrl: 'https://github.com/hasura/gatsby-gitbook-boilerplate',
+    githubUrl: 'https://github.com/m365devkr/m365devkr.github.io',
     helpUrl: '',
     tweetText: '',
     social: `<li>
