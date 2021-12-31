@@ -29,19 +29,18 @@ jobs:
       run: |
         npm install -g gatsby-cli
 
-    - name: Remove /docs
+    - name: Build app
+      shell: bash
+      run: |
+        cd ./app
+        npm install --legacy-peer-deps
+        gatsby build
+
+    - name: Copy artifacts
       shell: bash
       run: |
         rm -rf ./docs
-
-    - name: Build app
-      shell: pwsh
-      run: |
-        ./app-build.ps1
-
-    - name: Copy CNAME
-      shell: bash
-      run: |
+        mv ./app/public ./docs
         mv ./CNAME ./docs
 
     - name: Publish artifacts
