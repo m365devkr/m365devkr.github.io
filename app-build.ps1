@@ -5,7 +5,7 @@ cd ./app
 
 gatsby build
 
-move ./public ../doc
+move ./public ../docs
 
 cd ..
 
